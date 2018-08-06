@@ -1,42 +1,94 @@
 $(document).ready(function () {
-    var dibujarGifs = function (data) {
-        var gif = "";
+    var showPokemon = function (pokemones) {
+        var name = "";
         var url = "";
-        data.forEach(function (element) {
-            gif = element.images.downsized_large.url;
-            url = element.bitly_gif_url;
-            $("#elementos").append(armarTemplate(gif, url));
+
+        console.log(name);
+        pokemones.forEach(function (pokemon) {
+            console.log(pokemon);
+            
+        var name = pokemon.pokemon_species.name;
+        var imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.entry_number}.png`;
+        $("#elementos").append(armarTemplate(name, imagen));
         });
     }
 
-    var armarTemplate = function (gif, url) {
-        var t = "<div class='elemento'><img src='" + gif + "'/><a href='" + url + "'>Ver mas</a></div>"
+    var armarTemplate = function (name, imagen) {
+        var t = "<div class='elemento'><p>"+name+"</p><img src='" + imagen + "'/></div>";
         return t;
     }
 
-    var ajaxGif = function (gif) {
+    var ajaxPokemon = function (pokemon) {
         $.ajax({
-            url: 'http://api.giphy.com/v1/gifs/search',
+            url: `https://pokeapi.co/api/v2/pokedex/1`,
             type: 'GET',
             datatype: 'json',
-            data: {
-                q: gif,
-                api_key: 'OJUt9bVAmvejecBM7QKGT2HLwKowE6Yh'
-            }
         })
             .done(function (response) {
                 console.log(response);
-                dibujarGifs(response.data);
+                showPokemon(response.pokemon_entries);
             })
             .fail(function () {
                 console.log("error");
             });
     }
-
-    $("#buscar-gif").click(function (event) {
+    $("#buscar-pokemon").click(function (event) {
         console.log("Entro");
         $("#elementos").empty();
-        var gif = $("#gif-text").val();
-        ajaxGif(gif);
+        var pokemon = $("#poke-text").val();
+        ajaxPokemon(pokemon);
     });
 });
+
+// $(document).ready(function () {
+
+//     //main click event handler
+//     $("#search").click(function () {
+//         //fetch API data and display it on the content div
+//         var pokemon = $("#pokemon").val();
+//         var url = 'https://pokeapi.co/docsv2/1' + pokemon;
+
+//         $.ajax({
+//             type: 'GET',
+//             dataType: 'json',
+//             cache: false,
+//             url: url,
+//             success: function (data) {
+
+//                 $("#content").empty();
+
+//                 $("#content").append("<br /> <label>Pokemon Name:</label>" + " " + data.name);
+//                 $("#content").append("<br /><label>Base Experience:</label>" + " " + data.base_experience);
+//                 $("#content").append("<br /><label>Height:</label>" + " " + data.height);
+//                 $("#content").append("<br /><label>Weight:</label>" + " " + data.weight);
+//             }
+//         });
+//     });
+
+//     $("#next").click(function (e) {
+//         e.preventDefault();
+//         currentPage = parseInt($("#pokemon").val());
+//         nextPage = (currentPage + 1);
+//         $("#pokemon").val(nextPage);
+
+//         //call the search
+//         $("#search").click();
+//     });
+
+//     $("#last").click(function (e) {
+//         e.preventDefault();
+//         currentPage = parseInt($("#pokemon").val());
+//         if (currentPage > 0) {
+//             nextPage = (currentPage - 1);
+//         }
+//         else {
+//             nextPage = pageCount - 1;
+//         }
+
+//         $("#pokemon").val(nextPage);
+
+//         //call the search
+//         $("#search").click();
+//     });
+
+// });
