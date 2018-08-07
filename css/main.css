@@ -12,12 +12,16 @@ body{
     font-size: 10vh;
 }
 #poke-text{
-    border: transparent;
+    border-bottom-color: black;
     background-color: #f8f9fa;
 }
-#buscar-pokemon{
-    border: 0;
+
+/*#buscar-pokemon{
+    border:  #f8f9fa;
     background-color: #f8f9fa;
+}
+input{
+    border: transparent;
 }
 
 /* *{
